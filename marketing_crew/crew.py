@@ -6,9 +6,11 @@ from pydantic import BaseModel, Field
 from dotenv import load_dotenv
 
 _ = load_dotenv()
+import os
 llm = LLM(
     model="gemini/gemini-3.1-pro-preview",
     temperature=0.7,
+    api_key=os.environ.get("Gemini_API_Key") # Or hardcode it here (not recommended for production)
 )
 
 
@@ -117,14 +119,14 @@ class TheMarketingCrew():
     def create_content_calendar(self) -> Task:
         return Task(
             config=self.tasks_config['create_content_calendar'],
-            agent=self.content_writer_social_media()
+            agent=self.content_creator_social_media()
         )
 
     @task
     def prepare_post_drafts(self) -> Task:
         return Task(
             config=self.tasks_config['prepare_post_drafts'],
-            agent=self.content_writer_social_media(),
+            agent=self.content_creator_social_media(),
             output_json=Content
         )
 
@@ -132,7 +134,7 @@ class TheMarketingCrew():
     def prepare_scripts_for_reels(self) -> Task:
         return Task(
             config=self.tasks_config['prepare_scripts_for_reels'],
-            agent=self.content_writer_social_media(),
+            agent=self.content_creator_social_media(),
             output_json=Content
         )
 
